@@ -27,6 +27,10 @@ specific language governing permissions and limitations under the License.
 #include <biogears/cdm/utils/TimingProfile.h>
 #include <biogears/schema/cdm/Scenario.hxx>
 
+#include <biogears/cdm/patient/actions/SEExercise.h>
+#include "biogears/cdm/patient/actions/SEAsthmaAttack.h"
+#include <biogears/cdm/properties/SEScalarTypes.h>
+
 namespace biogears {
 SEScenarioExec::SEScenarioExec(PhysiologyEngine& engine)
   : Loggable(engine.GetLogger())
@@ -208,8 +212,10 @@ bool SEScenarioExec::ProcessActions(const SEScenario& scenario)
   bool err = false;
   SEAdvanceTime* adv;
   for (SEAction* a : scenario.GetActions()) {
-    if (m_Cancel)
+    if (m_Cancel) {
       break;
+    }
+    
     // We override advance time actions in order to advance and
     // pull requested data at each time step, all other actions
     // will be processed by the engine
